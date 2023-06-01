@@ -1,7 +1,9 @@
+import { GlobalStyles } from './assets';
+
 function App() {
   return (
     <>
-      Callapp Test
+      <GlobalStyles />
     </>
   )
 }
