@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Table } from 'antd';
+import { useUserStore } from '../store';
 import { IColumn, IUser } from '../interfaces';
 import { enlargeFirstLetter, generateColumnKeys, generateDataKeys } from '../utils';
-import { useUserStore } from '../store';
+import { AddressWrapper, ContentTitle } from '../components';
 
 function UsersTable() {
   const { users, getUsers } = useUserStore();
@@ -17,16 +18,16 @@ function UsersTable() {
 
         for (const key in firstObject) {
           let render = (value: any) => {
-            return <span>{String(value)}</span>
+            return <ContentTitle>{String(value)}</ContentTitle>
           }
           if (key === 'address') {
             render = (value: any) => {
               return (
-                <div>
+                <AddressWrapper>
                   {Object.keys(value).map(key => (
-                    <span>{key}: {value[key]}</span>
+                    <ContentTitle>{key}: {value[key]}</ContentTitle>
                   ))}
-                </div>
+                </AddressWrapper>
               )
             }
           }

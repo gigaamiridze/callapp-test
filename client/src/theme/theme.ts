@@ -3,4 +3,7 @@ export const theme = {
     white: "#ffffff",
     black: "#000000",
   },
+  fonts: {
+    roboto: "'Roboto', sans-serif",
+  }
 }

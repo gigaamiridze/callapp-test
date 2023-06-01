@@ -1,5 +1,6 @@
 import { RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { Helmet } from 'react-helmet-async';
 import { GlobalStyles } from './assets';
 import { router } from './routes';
 import { theme } from './theme';
@@ -9,6 +10,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <RouterProvider router={router} />
       <GlobalStyles />
+      <Helmet>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+      </Helmet>
     </ThemeProvider>
   )
 }
