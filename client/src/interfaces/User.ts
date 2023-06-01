@@ -9,7 +9,7 @@ export interface IUser {
 
 export interface IUserStore {
   users: IUser[];
-  getUsers: () => Promise<void>;
+  getUsers: () => Promise<IUser[]>;
   createUser: (user: IUser) => Promise<void>;
   updateUser: (id: number, user: IUser) => Promise<void>;
   deleteUser: (id: number) => Promise<void>;

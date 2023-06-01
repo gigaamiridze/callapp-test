@@ -1,14 +1,15 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import axios from 'axios';
-import { IUserStore, IUser } from '../interfaces';
+import { IUserStore, IUser, IGetData } from '../interfaces';
 
-const API_URL = 'http://localhost:3000/api/v1';
+const API_URL = 'http://localhost:5000/api/v1';
 
 const useUserStore = create<IUserStore>((set) => ({
   users: [],
   getUsers: async () => {
-    const response = await axios.get<IUser[]>(`${API_URL}/users`);
-    set({ users: response.data });
+    const { data } = await axios.get<IGetData>(`${API_URL}/users`);
+    set({ users: data.users });
+    return data.users;
   },
   createUser: async (user) => {
     const response = await axios.post<IUser>(`${API_URL}/users`, user);

@@ -44,6 +44,15 @@ const GlobalStyles = createGlobalStyle`
   a {
     text-decoration: none;
   }
+  // Elements styles
+  body {
+    width: 100%;
+  }
+  .ant-spin-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export default GlobalStyles;
