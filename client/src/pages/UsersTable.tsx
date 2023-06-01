@@ -8,13 +8,16 @@ import { AddressWrapper, ContentTitle } from '../components';
 
 function UsersTable() {
   const { users, getUsers } = useUserStore();
+  const [loading, setLoading] = useState<boolean>(false);
   const [columns, setColumns] = useState<IColumn[]>([]);
   const [dataSource, setDataSource] = useState<IUser[]>([]);
 
   useEffect(() => {
+    setLoading(true);
     tabTitle('Users Table');
     getUsers()
       .then(returnedUsers => {
+        setLoading(false);
         const firstObject = returnedUsers[0];
         const cols = [];
 
@@ -56,6 +59,8 @@ function UsersTable() {
     <Table 
       columns={columns} 
       dataSource={dataSource} 
+      loading={loading}
+      bordered
     />
   )
 }
