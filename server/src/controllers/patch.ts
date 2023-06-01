@@ -38,7 +38,7 @@ export const updateUser = (req: Request, res: Response) => {
       } else {
         res.status(200).json({
           status: 'success',
-          data: updatedUser,
+          user: updatedUser,
         });
       }
     });
