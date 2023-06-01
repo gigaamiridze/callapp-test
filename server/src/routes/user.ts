@@ -1,11 +1,12 @@
 import { Router } from 'express';
-import { getAllUsers, getUserById, createUser, updateUser } from '../controllers';
+import { getAllUsers, getUserById, createUser, updateUser, deleteAllUsers } from '../controllers';
 
 export const userRouter = Router();
 
 userRouter.route('/users')
   .get(getAllUsers)
-  .post(createUser);
+  .post(createUser)
+  .delete(deleteAllUsers);
 
 userRouter.route('/users/:id')
   .get(getUserById)
