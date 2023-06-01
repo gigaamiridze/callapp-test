@@ -20,8 +20,9 @@ const useUserStore = create<IUserStore>((set) => ({
     set((state) => ({ users: state.users.map(user => user.id === id ? response.data : user) }));
   },
   deleteUser: async (id) => {
-    await axios.delete(`${API_URL}/users/${id}`);
+    const { data } = await axios.delete(`${API_URL}/users/${id}`);
     set((state) => ({ users: state.users.filter(user => user.id !== id) }));
+    return data;
   }
 }));
 

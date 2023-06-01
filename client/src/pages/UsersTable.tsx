@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Table } from 'antd';
+import { Table, Popconfirm, Button } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import { tabTitle } from '../utils';
 import { useUserStore } from '../store';
 import { IColumn, IUser } from '../interfaces';
@@ -7,10 +8,15 @@ import { enlargeFirstLetter, generateColumnKeys, generateDataKeys } from '../uti
 import { AddressWrapper, ContentTitle } from '../components';
 
 function UsersTable() {
-  const { users, getUsers } = useUserStore();
+  const { users, getUsers, deleteUser } = useUserStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [columns, setColumns] = useState<IColumn[]>([]);
-  const [dataSource, setDataSource] = useState<IUser[]>([]);
+
+  const dataSource = generateDataKeys(users);
+
+  const handleDelete = (id: number) => {
+    deleteUser(id);
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -20,6 +26,7 @@ function UsersTable() {
         setLoading(false);
         const firstObject = returnedUsers[0];
         const cols = [];
+        let count = 0;
 
         for (const key in firstObject) {
           let render = (value: any) => {
@@ -42,13 +49,28 @@ function UsersTable() {
             render: render,
           }
           cols.push(col);
+
+          count++;
+          if (count === Object.keys(firstObject).length) {
+            cols.push({
+              title: 'Actions',
+              dataIndex: 'actions',
+              render: (_: any, record: IUser) => (
+                <Popconfirm
+                  title='Are you sure want to delete?'
+                  onConfirm={() => handleDelete(record.id)}
+                >
+                  <Button danger type='primary' icon={<DeleteOutlined />} />
+                </Popconfirm>
+              )
+            });
+          }
         }
 
         const columns = generateColumnKeys(cols);
         const dataSource = generateDataKeys(returnedUsers);
 
         setColumns(columns);
-        setDataSource(dataSource);
       })
       .catch(error => {
         console.log(error);
