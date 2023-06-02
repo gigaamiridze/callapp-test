@@ -4,7 +4,7 @@ import { tabTitle } from '../utils';
 import { useUserStore } from '../store';
 import { IColumn, IUser } from '../interfaces';
 import { enlargeFirstLetter, generateColumnKeys, generateDataKeys } from '../utils';
-import { UpdateModal, DeleteButton, AddButton } from '../layouts';
+import { UpdateModal, DeleteButton, AddButton, CreateModal } from '../layouts';
 import { AddressWrapper, ContentTitle, ActionsContainer } from '../components';
 
 function UsersTable() {
@@ -13,21 +13,8 @@ function UsersTable() {
   const [loading, setLoading] = useState<boolean>(false);
   const [columns, setColumns] = useState<IColumn[]>([]);
   const [selectedRow, setSelectedRow] = useState<IUser>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const handleRowDoubleClick = (rowData: IUser) => {
-    setSelectedRow(rowData);
-    updateUserForm.setFieldsValue({
-      name: rowData?.name,
-      email: rowData?.email,
-      gender: rowData?.gender,
-      city: rowData?.address?.city,
-      street: rowData?.address?.street,
-      phone: rowData?.phone,
-    });
-    setIsModalOpen(true);
-  }
-
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
   const dataSource = generateDataKeys(users);
 
   useEffect(() => {
@@ -69,7 +56,7 @@ function UsersTable() {
               dataIndex: 'actions',
               render: (_: any, record: IUser) => (
                 <ActionsContainer>
-                  <AddButton />
+                  <AddButton setIsCreateModalOpen={setIsCreateModalOpen} />
                   <DeleteButton record={record} />
                 </ActionsContainer>
               ),
@@ -85,6 +72,19 @@ function UsersTable() {
       });
   }, []);
 
+  const handleRowDoubleClick = (rowData: IUser) => {
+    setSelectedRow(rowData);
+    updateUserForm.setFieldsValue({
+      name: rowData?.name,
+      email: rowData?.email,
+      gender: rowData?.gender,
+      city: rowData?.address?.city,
+      street: rowData?.address?.street,
+      phone: rowData?.phone,
+    });
+    setIsUpdateModalOpen(true);
+  }
+
   return (
     <>
       <Table
@@ -99,8 +99,12 @@ function UsersTable() {
       <UpdateModal
         form={updateUserForm} 
         selectedRow={selectedRow}
-        setIsModalOpen={setIsModalOpen}
-        isModalOpen={isModalOpen}
+        setIsUpdateModalOpen={setIsUpdateModalOpen}
+        isUpdateModalOpen={isUpdateModalOpen}
+      />
+      <CreateModal 
+        setIsCreateModalOpen={setIsCreateModalOpen}
+        isCreateModalOpen={isCreateModalOpen}
       />
     </>
   )

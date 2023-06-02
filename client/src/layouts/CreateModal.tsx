@@ -1,50 +1,31 @@
 import { Modal, Form, Input, Select, Button } from 'antd';
-import { FlagOutlined, HomeOutlined, MailOutlined, PhoneOutlined, UserOutlined } from "@ant-design/icons";
-import { IUpdateModalProps, InputValues } from '../interfaces';
+import { FlagOutlined, HomeOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
+import { ICreateModalProps, InputValues } from '../interfaces';
 import { useUserStore } from '../store';
 import { showSuccessMessage, showErrorMessage } from '../utils';
 
-function UpdateModal(props: IUpdateModalProps) {
-  const { form, selectedRow, setIsUpdateModalOpen, isUpdateModalOpen  } = props;
-  const { updateUser } = useUserStore();
+function CreateModal(props: ICreateModalProps) {
+  const { setIsCreateModalOpen, isCreateModalOpen } = props;
+  const { createUser } = useUserStore();
   const genders = ['male', 'female'];
 
   const handleSave = (inputValues: InputValues) => {
     const { street, city, ...restValues } = inputValues;
     const address = { street, city };
-    const updatedData = { ...restValues, address };
+    const createdData = { ...restValues, address };
 
-    const userDataToSend  = {
-      ...selectedRow,
-      ...updatedData,
-    }
-
-    /*
-    I'm deleting the generated unique key for the data because 
-    I don't want it to be captured in the JSON file and after the table
-    */
-    delete userDataToSend.key;
-
-    updateUser(selectedRow?.id, updatedData)
-      .then(response => {
-        showSuccessMessage(`User with ID ${response.user.id} updated successfully`);
-      })
-      .catch(error => {
-        showErrorMessage(error.response.data.message);
-      });
-
-    setIsUpdateModalOpen(false);
+    setIsCreateModalOpen(false);
   };
 
   const handleCancel = () => {
-    setIsUpdateModalOpen(false);
+    setIsCreateModalOpen(false);
   }
 
   return (
     <Modal
-      title='Do you want to save data?'
+      title='Create user'
       centered
-      open={isUpdateModalOpen}
+      open={isCreateModalOpen}
       onCancel={handleCancel}
       footer={[
         <Button key='cancel' onClick={handleCancel}>
@@ -52,16 +33,16 @@ function UpdateModal(props: IUpdateModalProps) {
         </Button>,
         <Button 
           key='save' 
+          form='createUser'
           type='primary' 
-          htmlType='submit'
-          onClick={() => form.submit()}
+          htmlType='submit' 
         >
           Save
         </Button>
       ]}
     >
       <Form
-        form={form}
+        id='createUser'
         onFinish={handleSave}
         autoComplete='off'
       >
@@ -139,4 +120,4 @@ function UpdateModal(props: IUpdateModalProps) {
   )
 }
 
-export default UpdateModal;
+export default CreateModal;

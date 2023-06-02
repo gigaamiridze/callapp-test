@@ -4,6 +4,11 @@ import { IUser } from './User';
 export interface IUpdateModalProps {
   form: FormInstance<any>;
   selectedRow: IUser | undefined;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isModalOpen: boolean;
+  setIsUpdateModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isUpdateModalOpen: boolean;
+}
+
+export interface ICreateModalProps {
+  setIsCreateModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isCreateModalOpen: boolean;
 }
