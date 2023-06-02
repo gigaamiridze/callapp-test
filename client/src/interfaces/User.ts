@@ -1,12 +1,12 @@
 import { IDeleteData } from './Endpoint';
 
 export interface IUser {
-  id: number;
-  name: string;
-  email: string;
-  gender: string;
-  address: IAddress;
-  phone: string;
+  id?: number | undefined;
+  name?: string | undefined;
+  email?: string | undefined;
+  gender?: string | undefined;
+  address?: IAddress;
+  phone?: string | undefined;
 }
 
 export interface IUserStore {
@@ -18,6 +18,6 @@ export interface IUserStore {
 }
 
 interface IAddress {
-  street: string;
-  city: string;
+  street: string | undefined;
+  city: string | undefined;
 }

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { Table, Popconfirm, Button, Modal } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { useState, useEffect, ChangeEvent } from 'react';
+import { Table, Popconfirm, Button, Modal, Input, Select } from 'antd';
+import { DeleteOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { tabTitle } from '../utils';
 import { useUserStore } from '../store';
 import { IColumn, IUser } from '../interfaces';
@@ -12,18 +12,31 @@ function UsersTable() {
   const [loading, setLoading] = useState<boolean>(false);
   const [columns, setColumns] = useState<IColumn[]>([]);
   const [selectedRow, setSelectedRow] = useState<IUser>();
+  const [inputValues, setInputValues] = useState<IUser | undefined>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleRowDoubleClick = (rowData: IUser) => {
     setSelectedRow(rowData);
+    setInputValues(rowData);
     setIsModalOpen(true);
   }
 
-  const handleUpdate = () => {
-    // Perform data validation if needed
-    // Update the data row with the new values
+  const handleInputChange = (name: string, value: string) => {
+    setInputValues((prevValues) => {
+      return ({
+        ...prevValues,
+        [name]: value,
+      });
+    });
+  }
 
-    // Close the modal and reset state
+  const handleUpdate = () => {
+    const updatedData = {
+      ...selectedRow,
+      ...inputValues,
+    }
+    console.log(updatedData);
+
     setIsModalOpen(false);
   };
 
@@ -96,6 +109,8 @@ function UsersTable() {
       });
   }, []);
 
+  const genders = ['male', 'female'];
+
   return (
     <>
       <Table
@@ -114,8 +129,29 @@ function UsersTable() {
         onCancel={() => setIsModalOpen(false)}
         onOk={handleUpdate}
       >
-        <p>{selectedRow?.id}</p>
-        <p>{selectedRow?.name}</p>
+        <Input
+          name='name'
+          placeholder='Name'
+          value={inputValues?.name}
+          onChange={(e) => handleInputChange('name', e.target.value)}
+          addonBefore={<UserOutlined />}
+          allowClear
+        />
+        <Input
+          name='email'
+          placeholder='Email'
+          value={inputValues?.email}
+          onChange={(e) => handleInputChange('email', e.target.value)}
+          addonBefore={<MailOutlined />}
+          allowClear
+        />
+        <Select 
+          placeholder='Select gender'
+          value={inputValues?.gender}
+          onChange={(value) => handleInputChange('gender', value)}
+          options={genders.map(gender => ({ label: gender, value: gender }))}
+          style={{ width: '100%' }}
+        />
         <Button 
           type='primary'
           onClick={handleUpdate}
