@@ -5,3 +5,8 @@ export interface IGetData {
   count: number;
   users: IUser[];
 }
+
+export interface IDeleteData {
+  status: string;
+  message: string;
+}

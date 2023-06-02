@@ -15,7 +15,13 @@ function UsersTable() {
   const dataSource = generateDataKeys(users);
 
   const handleDelete = (id: number) => {
-    deleteUser(id);
+    deleteUser(id)
+      .then(response => {
+        console.log(response.message);
+      })
+      .catch(error => {
+        console.log(error.response.data.message);
+      });
   }
 
   useEffect(() => {
