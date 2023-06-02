@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Table, Popconfirm, Button } from 'antd';
+import { Table, Popconfirm, Button, Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { tabTitle } from '../utils';
 import { useUserStore } from '../store';
@@ -11,6 +11,21 @@ function UsersTable() {
   const { users, getUsers, deleteUser } = useUserStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [columns, setColumns] = useState<IColumn[]>([]);
+  const [selectedRow, setSelectedRow] = useState<IUser>();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleRowDoubleClick = (rowData: IUser) => {
+    setSelectedRow(rowData);
+    setIsModalOpen(true);
+  }
+
+  const handleUpdate = () => {
+    // Perform data validation if needed
+    // Update the data row with the new values
+
+    // Close the modal and reset state
+    setIsModalOpen(false);
+  };
 
   const dataSource = generateDataKeys(users);
 
@@ -74,8 +89,6 @@ function UsersTable() {
         }
 
         const columns = generateColumnKeys(cols);
-        const dataSource = generateDataKeys(returnedUsers);
-
         setColumns(columns);
       })
       .catch(error => {
@@ -84,12 +97,33 @@ function UsersTable() {
   }, []);
 
   return (
-    <Table 
-      columns={columns} 
-      dataSource={dataSource} 
-      loading={loading}
-      bordered
-    />
+    <>
+      <Table
+        columns={columns}
+        dataSource={dataSource}
+        loading={loading}
+        bordered
+        onRow={(record) => ({
+          onDoubleClick: () => handleRowDoubleClick(record),
+        })}
+      />
+      <Modal
+        title='Do you want to update user?'
+        centered
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        onOk={handleUpdate}
+      >
+        <p>{selectedRow?.id}</p>
+        <p>{selectedRow?.name}</p>
+        <Button 
+          type='primary'
+          onClick={handleUpdate}
+        >
+          Save
+        </Button>
+      </Modal>
+    </>
   )
 }
 
