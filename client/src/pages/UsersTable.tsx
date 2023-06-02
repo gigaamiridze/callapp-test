@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Table, Popconfirm, Button, Modal, Input, Select } from 'antd';
-import { DeleteOutlined, MailOutlined, UserOutlined, FlagOutlined, HomeOutlined, PhoneOutlined } from '@ant-design/icons';
+import { Table, Popconfirm, Button } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import { tabTitle } from '../utils';
 import { useUserStore } from '../store';
 import { IColumn, IUser } from '../interfaces';
@@ -8,7 +8,7 @@ import { enlargeFirstLetter, generateColumnKeys, generateDataKeys } from '../uti
 import { AddressWrapper, ContentTitle } from '../components';
 
 function UsersTable() {
-  const { users, getUsers, deleteUser, updateUser } = useUserStore();
+  const { users, getUsers, deleteUser } = useUserStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [columns, setColumns] = useState<IColumn[]>([]);
   const [selectedRow, setSelectedRow] = useState<IUser>();
@@ -19,54 +19,6 @@ function UsersTable() {
     setSelectedRow(rowData);
     setInputValues(rowData);
     setIsModalOpen(true);
-  }
-
-  const handleInputChange = (name: string, value: string) => {
-    setInputValues((prevValues) => {
-      return ({
-        ...prevValues,
-        [name]: value,
-      });
-    });
-  }
-
-  const handleAddressChange = (key: string, value: string) => {
-    setInputValues((prevValues) => {
-      return ({
-        ...prevValues,
-        address: {
-          ...prevValues?.address,
-          [key]: value,
-        }
-      })
-    });
-  }
-
-  const handleSave = () => {
-    const updatedData = {
-      ...selectedRow,
-      ...inputValues,
-    }
-
-    /*
-    I'm deleting the generated unique key for the data because 
-    I don't want it to be captured in the JSON file and after the table
-    */
-    delete updatedData.key;
-    
-    updateUser(selectedRow?.id, updatedData)
-      .then(response => {
-        console.log(`User with ID ${response.user.id} updated successfully`);
-      })
-      .catch(error => {
-        console.log(error.response.data.message);
-      });
-
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
   }
 
   const dataSource = generateDataKeys(users);
@@ -138,8 +90,6 @@ function UsersTable() {
       });
   }, []);
 
-  const genders = ['male', 'female'];
-
   return (
     <>
       <Table
@@ -151,67 +101,13 @@ function UsersTable() {
           onDoubleClick: () => handleRowDoubleClick(record),
         })}
       />
-      <Modal
-        title='Do you want to save data?'
-        centered
-        open={isModalOpen}
-        footer={[
-          <Button key='cancel' onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button key='save' type='primary' onClick={handleSave}>
-            Save
-          </Button>,
-        ]}
-      >
-        <Input
-          name='name'
-          placeholder='Name'
-          value={inputValues?.name}
-          onChange={(e) => handleInputChange('name', e.target.value)}
-          addonBefore={<UserOutlined />}
-          allowClear
-        />
-        <Input
-          name='email'
-          placeholder='Email'
-          value={inputValues?.email}
-          onChange={(e) => handleInputChange('email', e.target.value)}
-          addonBefore={<MailOutlined />}
-          allowClear
-        />
-        <Select 
-          placeholder='Select gender'
-          value={inputValues?.gender}
-          onChange={(value) => handleInputChange('gender', value)}
-          options={genders.map(gender => ({ label: gender, value: gender }))}
-          style={{ width: '100%' }}
-        />
-        <Input
-          name='city'
-          placeholder='City'
-          value={inputValues?.address?.city}
-          onChange={(e) => handleAddressChange('city', e.target.value)}
-          addonBefore={<HomeOutlined />}
-          allowClear
-        />
-        <Input
-          name='street'
-          placeholder='Street'
-          value={inputValues?.address?.street}
-          onChange={(e) => handleAddressChange('street', e.target.value)}
-          addonBefore={<FlagOutlined />}
-          allowClear
-        />
-        <Input
-          name='phone'
-          placeholder='Phone'
-          value={inputValues?.phone}
-          onChange={(e) => handleInputChange('phone', e.target.value)}
-          addonBefore={<PhoneOutlined />}
-          allowClear
-        />
-      </Modal>
+      <UpdateModal 
+        selectedRow={selectedRow}
+        setInputValues={setInputValues}
+        inputValues={inputValues}
+        setIsModalOpen={setIsModalOpen}
+        isModalOpen={isModalOpen}
+      />
     </>
   )
 }
