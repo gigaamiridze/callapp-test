@@ -2,6 +2,7 @@ import { Modal, Input, Select, Button } from 'antd';
 import { FlagOutlined, HomeOutlined, MailOutlined, PhoneOutlined, UserOutlined } from "@ant-design/icons";
 import { IUpdateModalProps } from '../interfaces';
 import { useUserStore } from '../store';
+import { showSuccessMessage, showErrorMessage } from '../utils';
 import { InputsContainer } from '../components';
 
 function UpdateModal(props: IUpdateModalProps) {
@@ -44,10 +45,10 @@ function UpdateModal(props: IUpdateModalProps) {
 
     updateUser(selectedRow?.id, updatedData)
       .then(response => {
-        console.log(`User with ID ${response.user.id} updated successfully`);
+        showSuccessMessage(`User with ID ${response.user.id} updated successfully`);
       })
       .catch(error => {
-        console.log(error.response.data.message);
+        showErrorMessage(error.response.data.message);
       });
 
     setIsModalOpen(false);
