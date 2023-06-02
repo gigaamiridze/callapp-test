@@ -10,3 +10,8 @@ export interface IDeleteData {
   status: string;
   message: string;
 }
+
+export interface IUpdateData {
+  status: string;
+  user: IUser;
+}

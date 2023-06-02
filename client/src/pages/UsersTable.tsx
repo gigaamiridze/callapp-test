@@ -8,11 +8,11 @@ import { enlargeFirstLetter, generateColumnKeys, generateDataKeys } from '../uti
 import { AddressWrapper, ContentTitle } from '../components';
 
 function UsersTable() {
-  const { users, getUsers, deleteUser } = useUserStore();
+  const { users, getUsers, deleteUser, updateUser } = useUserStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [columns, setColumns] = useState<IColumn[]>([]);
   const [selectedRow, setSelectedRow] = useState<IUser>();
-  const [inputValues, setInputValues] = useState<IUser | undefined>();
+  const [inputValues, setInputValues] = useState<IUser>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleRowDoubleClick = (rowData: IUser) => {
@@ -42,19 +42,25 @@ function UsersTable() {
     });
   }
 
-  const handleUpdate = () => {
+  const handleSave = () => {
     const updatedData = {
       ...selectedRow,
       ...inputValues,
     }
-    console.log(updatedData);
+    updateUser(selectedRow?.id, updatedData)
+      .then(response => {
+        console.log(`User with ID ${response.user.id} updated successfully`);
+      })
+      .catch(error => {
+        console.log(error.response.data.message);
+      });
 
     setIsModalOpen(false);
   };
 
   const dataSource = generateDataKeys(users);
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: number | undefined) => {
     deleteUser(id)
       .then(response => {
         console.log(response.message);
@@ -68,9 +74,9 @@ function UsersTable() {
     setLoading(true);
     tabTitle('Users Table');
     getUsers()
-      .then(returnedUsers => {
+      .then(response => {
         setLoading(false);
-        const firstObject = returnedUsers[0];
+        const firstObject = response.users[0];
         const cols = [];
         let count = 0;
 
@@ -135,11 +141,11 @@ function UsersTable() {
         })}
       />
       <Modal
-        title='Do you want to update user?'
+        title='Do you want to save data?'
         centered
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
-        onOk={handleUpdate}
+        onOk={handleSave}
       >
         <Input
           name='name'
@@ -190,7 +196,8 @@ function UsersTable() {
         />
         <Button 
           type='primary'
-          onClick={handleUpdate}
+          onClick={handleSave}
+          style={{ width: '100px' }}
         >
           Save
         </Button>
