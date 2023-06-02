@@ -4,8 +4,8 @@ import { tabTitle } from '../utils';
 import { useUserStore } from '../store';
 import { IColumn, IUser } from '../interfaces';
 import { enlargeFirstLetter, generateColumnKeys, generateDataKeys } from '../utils';
-import { UpdateModal, DeleteButton } from '../layouts';
-import { AddressWrapper, ContentTitle } from '../components';
+import { UpdateModal, DeleteButton, AddButton } from '../layouts';
+import { AddressWrapper, ContentTitle, ActionsContainer } from '../components';
 
 function UsersTable() {
   const { users, getUsers } = useUserStore();
@@ -67,7 +67,12 @@ function UsersTable() {
             cols.push({
               title: 'Actions',
               dataIndex: 'actions',
-              render: (_: any, record: IUser) => <DeleteButton record={record} />,
+              render: (_: any, record: IUser) => (
+                <ActionsContainer>
+                  <AddButton />
+                  <DeleteButton record={record} />
+                </ActionsContainer>
+              ),
             });
           }
         }
