@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Table, Popconfirm, Button } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { Table } from 'antd';
 import { tabTitle } from '../utils';
 import { useUserStore } from '../store';
 import { IColumn, IUser } from '../interfaces';
 import { enlargeFirstLetter, generateColumnKeys, generateDataKeys } from '../utils';
+import { UpdateModal, DeleteButton } from '../layouts';
 import { AddressWrapper, ContentTitle } from '../components';
 
 function UsersTable() {
-  const { users, getUsers, deleteUser } = useUserStore();
+  const { users, getUsers } = useUserStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [columns, setColumns] = useState<IColumn[]>([]);
   const [selectedRow, setSelectedRow] = useState<IUser>();
@@ -22,16 +22,6 @@ function UsersTable() {
   }
 
   const dataSource = generateDataKeys(users);
-
-  const handleDelete = (id: number | undefined) => {
-    deleteUser(id)
-      .then(response => {
-        console.log(response.message);
-      })
-      .catch(error => {
-        console.log(error.response.data.message);
-      });
-  }
 
   useEffect(() => {
     setLoading(true);
@@ -70,14 +60,7 @@ function UsersTable() {
             cols.push({
               title: 'Actions',
               dataIndex: 'actions',
-              render: (_: any, record: IUser) => (
-                <Popconfirm
-                  title='Are you sure want to delete?'
-                  onConfirm={() => handleDelete(record.id)}
-                >
-                  <Button danger type='primary' icon={<DeleteOutlined />} />
-                </Popconfirm>
-              )
+              render: (_: any, record: IUser) => <DeleteButton record={record} />,
             });
           }
         }
