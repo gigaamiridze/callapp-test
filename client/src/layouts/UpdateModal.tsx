@@ -1,47 +1,29 @@
-import { Modal, Input, Select, Button } from 'antd';
+import { Modal, Form, Input, Select, Button } from 'antd';
 import { FlagOutlined, HomeOutlined, MailOutlined, PhoneOutlined, UserOutlined } from "@ant-design/icons";
-import { IUpdateModalProps } from '../interfaces';
+import { IUpdateModalProps, InputValues } from '../interfaces';
 import { useUserStore } from '../store';
 import { showSuccessMessage, showErrorMessage } from '../utils';
-import { InputsContainer } from '../components';
 
 function UpdateModal(props: IUpdateModalProps) {
-  const { selectedRow, setInputValues, inputValues, setIsModalOpen, isModalOpen } = props;
+  const { form, selectedRow, setIsModalOpen, isModalOpen } = props;
   const { updateUser } = useUserStore();
   const genders = ['male', 'female'];
 
-  const handleInputChange = (name: string, value: string) => {
-    setInputValues((prevValues) => {
-      return ({
-        ...prevValues,
-        [name]: value,
-      });
-    });
-  }
+  const handleSave = (inputValues: InputValues) => {
+    const { street, city, ...restValues } = inputValues;
+    const address = { street, city };
+    const updatedData = { ...restValues, address };
 
-  const handleAddressChange = (key: string, value: string) => {
-    setInputValues((prevValues) => {
-      return ({
-        ...prevValues,
-        address: {
-          ...prevValues?.address,
-          [key]: value,
-        }
-      })
-    });
-  }
-
-  const handleSave = () => {
-    const updatedData = {
+    const userDataToSend  = {
       ...selectedRow,
-      ...inputValues,
+      ...updatedData,
     }
 
     /*
     I'm deleting the generated unique key for the data because 
     I don't want it to be captured in the JSON file and after the table
     */
-    delete updatedData.key;
+    delete userDataToSend.key;
 
     updateUser(selectedRow?.id, updatedData)
       .then(response => {
@@ -68,65 +50,91 @@ function UpdateModal(props: IUpdateModalProps) {
         <Button key='cancel' onClick={handleCancel}>
           Cancel
         </Button>,
-        <Button key='save' type='primary' onClick={handleSave}>
+        <Button 
+          key='save' 
+          type='primary' 
+          htmlType='submit'
+          onClick={() => form.submit()}
+        >
           Save
-        </Button>,
+        </Button>
       ]}
     >
-      <InputsContainer>
-        <Input
+      <Form
+        form={form}
+        onFinish={handleSave}
+        autoComplete='off'
+      >
+        <Form.Item
           name='name'
-          id='name'
-          placeholder='Name'
-          value={inputValues?.name}
-          onChange={(e) => handleInputChange('name', e.target.value)}
-          addonBefore={<UserOutlined />}
-          allowClear
-        />
-        <Input
+          rules={[{ required: true, message: 'Please enter your name' }]}
+        >
+          <Input
+            placeholder='Name'
+            addonBefore={<UserOutlined />}
+            allowClear
+          />
+        </Form.Item>
+        <Form.Item
           name='email'
-          id='email'
-          placeholder='Email'
-          value={inputValues?.email}
-          onChange={(e) => handleInputChange('email', e.target.value)}
-          addonBefore={<MailOutlined />}
-          allowClear
-        />
-        <Select
-          placeholder='Select gender'
-          value={inputValues?.gender}
-          onChange={(value) => handleInputChange('gender', value)}
-          options={genders.map(gender => ({ label: gender, value: gender }))}
-          style={{ width: '100%' }}
-        />
-        <Input
+          rules={[
+            {
+              required: true,
+              message: 'Please enter your email',
+            },
+            {
+              type: 'email',
+              message: 'Please enter a valid email',
+            },
+          ]}
+        >
+          <Input
+            placeholder='Email'
+            addonBefore={<MailOutlined />}
+            allowClear
+          />
+        </Form.Item>
+        <Form.Item
+          name='gender'
+          rules={[{ required: true, message: 'Please select your gender' }]}
+        >
+          <Select
+            placeholder='Select gender'
+            options={genders.map(gender => ({ label: gender, value: gender }))}
+            style={{ width: '100%' }}
+          />
+        </Form.Item>
+        <Form.Item
           name='city'
-          id='city'
-          placeholder='City'
-          value={inputValues?.address?.city}
-          onChange={(e) => handleAddressChange('city', e.target.value)}
-          addonBefore={<HomeOutlined />}
-          allowClear
-        />
-        <Input
+          rules={[{ required: true, message: 'Please enter your city' }]}
+        >
+          <Input
+            placeholder='City'
+            addonBefore={<HomeOutlined />}
+            allowClear
+          />
+        </Form.Item>
+        <Form.Item
           name='street'
-          id='street'
-          placeholder='Street'
-          value={inputValues?.address?.street}
-          onChange={(e) => handleAddressChange('street', e.target.value)}
-          addonBefore={<FlagOutlined />}
-          allowClear
-        />
-        <Input
+          rules={[{ required: true, message: 'Please enter your street' }]}
+        >
+          <Input
+            placeholder='Street'
+            addonBefore={<FlagOutlined />}
+            allowClear
+          />
+        </Form.Item>
+        <Form.Item
           name='phone'
-          id='phone'
-          placeholder='Phone'
-          value={inputValues?.phone}
-          onChange={(e) => handleInputChange('phone', e.target.value)}
-          addonBefore={<PhoneOutlined />}
-          allowClear
-        />
-      </InputsContainer>
+          rules={[{ required: true, message: 'Please enter your phone' }]}
+        >
+          <Input
+            placeholder='phone'
+            addonBefore={<PhoneOutlined />}
+            allowClear
+          />
+        </Form.Item>
+      </Form>
     </Modal>
   )
 }
