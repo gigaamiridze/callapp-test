@@ -1,6 +1,6 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect } from 'react';
 import { Table, Popconfirm, Button, Modal, Input, Select } from 'antd';
-import { DeleteOutlined, MailOutlined, UserOutlined, FlagOutlined, HomeOutlined } from '@ant-design/icons';
+import { DeleteOutlined, MailOutlined, UserOutlined, FlagOutlined, HomeOutlined, PhoneOutlined } from '@ant-design/icons';
 import { tabTitle } from '../utils';
 import { useUserStore } from '../store';
 import { IColumn, IUser } from '../interfaces';
@@ -178,6 +178,14 @@ function UsersTable() {
           value={inputValues?.address?.street}
           onChange={(e) => handleAddressChange('street', e.target.value)}
           addonBefore={<FlagOutlined />}
+          allowClear
+        />
+        <Input
+          name='phone'
+          placeholder='Phone'
+          value={inputValues?.phone}
+          onChange={(e) => handleInputChange('phone', e.target.value)}
+          addonBefore={<PhoneOutlined />}
           allowClear
         />
         <Button 
