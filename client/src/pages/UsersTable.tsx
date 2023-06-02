@@ -58,6 +58,10 @@ function UsersTable() {
     setIsModalOpen(false);
   };
 
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  }
+
   const dataSource = generateDataKeys(users);
 
   const handleDelete = (id: number | undefined) => {
@@ -144,8 +148,14 @@ function UsersTable() {
         title='Do you want to save data?'
         centered
         open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        onOk={handleSave}
+        footer={[
+          <Button key='cancel' onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button key='save' type='primary' onClick={handleSave}>
+            Save
+          </Button>,
+        ]}
       >
         <Input
           name='name'
@@ -194,13 +204,6 @@ function UsersTable() {
           addonBefore={<PhoneOutlined />}
           allowClear
         />
-        <Button 
-          type='primary'
-          onClick={handleSave}
-          style={{ width: '100px' }}
-        >
-          Save
-        </Button>
       </Modal>
     </>
   )
