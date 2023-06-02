@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { Table, Popconfirm, Button, Modal, Input, Select } from 'antd';
-import { DeleteOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { DeleteOutlined, MailOutlined, UserOutlined, FlagOutlined, HomeOutlined } from '@ant-design/icons';
 import { tabTitle } from '../utils';
 import { useUserStore } from '../store';
 import { IColumn, IUser } from '../interfaces';
@@ -27,6 +27,18 @@ function UsersTable() {
         ...prevValues,
         [name]: value,
       });
+    });
+  }
+
+  const handleAddressChange = (key: string, value: string) => {
+    setInputValues((prevValues) => {
+      return ({
+        ...prevValues,
+        address: {
+          ...prevValues?.address,
+          [key]: value,
+        }
+      })
     });
   }
 
@@ -151,6 +163,22 @@ function UsersTable() {
           onChange={(value) => handleInputChange('gender', value)}
           options={genders.map(gender => ({ label: gender, value: gender }))}
           style={{ width: '100%' }}
+        />
+        <Input
+          name='city'
+          placeholder='City'
+          value={inputValues?.address?.city}
+          onChange={(e) => handleAddressChange('city', e.target.value)}
+          addonBefore={<HomeOutlined />}
+          allowClear
+        />
+        <Input
+          name='street'
+          placeholder='Street'
+          value={inputValues?.address?.street}
+          onChange={(e) => handleAddressChange('street', e.target.value)}
+          addonBefore={<FlagOutlined />}
+          allowClear
         />
         <Button 
           type='primary'
