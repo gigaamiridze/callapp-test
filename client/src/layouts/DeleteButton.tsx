@@ -23,7 +23,9 @@ function DeleteButton(props: IDeleteButtonProps) {
       title='Are you sure want to delete?'
       onConfirm={() => handleDelete(record.id)}
     >
-      <Button danger type='primary' icon={<DeleteOutlined />} />
+      <Button danger type='primary' icon={<DeleteOutlined />}>
+        Delete
+      </Button>
     </Popconfirm>
   )
 }

@@ -10,7 +10,9 @@ function AddButton(props: IAddButtonProps) {
       type='primary' 
       icon={<UserAddOutlined />}
       onClick={() => setIsCreateModalOpen(true)}
-     />
+    >
+      Add User
+    </Button>
   )
 }
 
