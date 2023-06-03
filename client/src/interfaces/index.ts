@@ -4,5 +4,6 @@ export * from './Theme';
 export * from './Table';
 export * from './Modal';
 export * from './Input';
+export * from './Chart';
 export * from './User';
 export * from './City';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Pie } from '@ant-design/charts';
-import { IUser, ICityData } from '../interfaces';
+import { IUser, ICityData, IChartConfig  } from '../interfaces';
 import { tabTitle } from '../utils';
 import { useUserStore } from '../store';
 import { ChartContainer, ChartTitle } from '../components';
@@ -22,8 +22,10 @@ function PieChart() {
   }, []);
 
   users?.map((user) => {
-    const { city } = user.address;
-    cityCounts[city] = (cityCounts[city] || 0) + 1;
+    const city: string | undefined = user.address?.city;
+    if (city !== undefined) {
+      cityCounts[city] = (cityCounts[city] || 0) + 1;
+    }
   });
 
   const data: ICityData[] = Object.entries(cityCounts).map(([city, count]) => ({
@@ -31,7 +33,7 @@ function PieChart() {
     count,
   }));
 
-  const config = {
+  const config: IChartConfig = {
     data,
     appendPadding: 10,
     angleField: 'count',
@@ -40,7 +42,7 @@ function PieChart() {
     label: {
       type: 'inner',
       offset: '-30%',
-      content: ({ percent }) => `${(percent * 100).toFixed(0)}%`,
+      content: '{percentage}',
       style: {
         fontSize: 14,
         textAlign: 'center',
