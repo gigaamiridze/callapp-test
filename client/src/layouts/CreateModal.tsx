@@ -7,6 +7,7 @@ import { showSuccessMessage, showErrorMessage } from '../utils';
 function CreateModal(props: ICreateModalProps) {
   const { setIsCreateModalOpen, isCreateModalOpen } = props;
   const { createUser } = useUserStore();
+  const [form] = Form.useForm();
   const genders = ['male', 'female'];
 
   const handleSave = (inputValues: InputValues) => {
@@ -15,6 +16,7 @@ function CreateModal(props: ICreateModalProps) {
     const createdData = { ...restValues, address };
 
     setIsCreateModalOpen(false);
+    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -33,16 +35,16 @@ function CreateModal(props: ICreateModalProps) {
         </Button>,
         <Button 
           key='save' 
-          form='createUser'
           type='primary' 
           htmlType='submit' 
+          onClick={() => form.submit()}
         >
           Save
         </Button>
       ]}
     >
       <Form
-        id='createUser'
+        form={form}
         onFinish={handleSave}
         autoComplete='off'
       >
