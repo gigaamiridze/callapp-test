@@ -3,6 +3,7 @@ import { Pie } from '@ant-design/charts';
 import { IUser, ICityData } from '../interfaces';
 import { tabTitle } from '../utils';
 import { useUserStore } from '../store';
+import { ChartContainer, ChartTitle } from '../components';
 
 function PieChart() {
   const { getUsers } = useUserStore();
@@ -30,7 +31,7 @@ function PieChart() {
     count,
   }));
 
-  const configs = {
+  const config = {
     data,
     appendPadding: 10,
     angleField: 'count',
@@ -53,7 +54,10 @@ function PieChart() {
   };
 
   return (
-    <Pie {...configs} />
+    <ChartContainer>
+      <ChartTitle>Percentage of people by city</ChartTitle>
+      <Pie {...config} />
+    </ChartContainer>
   )
 }
 
