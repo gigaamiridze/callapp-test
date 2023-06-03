@@ -48,10 +48,8 @@ const GlobalStyles = createGlobalStyle`
   body {
     width: 100%;
   }
-  .ant-spin-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .ant-pagination {
+    justify-content: center !important;
   }
 `;
 

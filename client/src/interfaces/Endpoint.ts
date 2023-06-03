@@ -8,6 +8,7 @@ export interface IGetData {
 
 export interface ICreateData {
   status: string;
+  message: string;
   user: IUser;
 }
 

@@ -17,7 +17,7 @@ function CreateModal(props: ICreateModalProps) {
 
     createUser(userData)
       .then(response => {
-        showSuccessMessage('User created successfully');
+        showSuccessMessage(response.message);
       })
       .catch(error => {
         showErrorMessage(error.response.data.message);

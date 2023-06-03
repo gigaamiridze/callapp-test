@@ -5,7 +5,7 @@ import { useUserStore } from '../store';
 import { IColumn, IUser } from '../interfaces';
 import { enlargeFirstLetter, generateColumnKeys, generateDataKeys } from '../utils';
 import { UpdateModal, DeleteButton, AddButton, CreateModal } from '../layouts';
-import { AddressWrapper, ContentTitle, ActionsContainer } from '../components';
+import { AddressWrapper, ContentWrapper, ContentTitle } from '../components';
 
 function UsersTable() {
   const { users, getUsers } = useUserStore();
@@ -54,12 +54,7 @@ function UsersTable() {
             cols.push({
               title: 'Actions',
               dataIndex: 'actions',
-              render: (_: any, record: IUser) => (
-                <ActionsContainer>
-                  <AddButton setIsCreateModalOpen={setIsCreateModalOpen} />
-                  <DeleteButton record={record} />
-                </ActionsContainer>
-              ),
+              render: (_: any, record: IUser) => <DeleteButton record={record} />,
             });
           }
         }
@@ -87,22 +82,25 @@ function UsersTable() {
 
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={dataSource}
-        loading={loading}
-        bordered
-        onRow={(record) => ({
-          onDoubleClick: () => handleRowDoubleClick(record),
-        })}
-      />
+      <ContentWrapper>
+        <AddButton setIsCreateModalOpen={setIsCreateModalOpen} />
+        <Table
+          columns={columns}
+          dataSource={dataSource}
+          loading={loading}
+          bordered
+          onRow={(record) => ({
+            onDoubleClick: () => handleRowDoubleClick(record),
+          })}
+        />
+      </ContentWrapper>
       <UpdateModal
-        form={updateUserForm} 
+        form={updateUserForm}
         selectedRow={selectedRow}
         setIsUpdateModalOpen={setIsUpdateModalOpen}
         isUpdateModalOpen={isUpdateModalOpen}
       />
-      <CreateModal 
+      <CreateModal
         setIsCreateModalOpen={setIsCreateModalOpen}
         isCreateModalOpen={isCreateModalOpen}
       />
