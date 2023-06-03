@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
   // Reset styles
@@ -47,6 +47,21 @@ const GlobalStyles = createGlobalStyle`
   // Elements styles
   body {
     width: 100%;
+
+    &::-webkit-scrollbar {
+      width: 14px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      ${({ theme }) => css`
+        background-color: ${theme.colors.gray};
+        border: 3px solid ${theme.colors.white};
+      `}
+      border-radius: 10px;
+    }
   }
   .ant-pagination {
     justify-content: center !important;
