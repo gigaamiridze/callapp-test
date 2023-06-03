@@ -1,4 +1,4 @@
-import { IGetData, IDeleteData, IUpdateData } from './Endpoint';
+import { IGetData, ICreateData, IDeleteData, IUpdateData } from './Endpoint';
 
 export interface IUser {
   id?: number | undefined;
@@ -13,7 +13,7 @@ export interface IUser {
 export interface IUserStore {
   users: IUser[];
   getUsers: () => Promise<IGetData>;
-  createUser: (user: IUser) => Promise<void>;
+  createUser: (user: IUser) => Promise<ICreateData>;
   updateUser: (id: number | undefined, user: IUser) => Promise<IUpdateData>;
   deleteUser: (id: number | undefined) => Promise<IDeleteData>;
 }

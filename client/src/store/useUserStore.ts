@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
-import { IUserStore, IUser, IGetData, IDeleteData, IUpdateData } from '../interfaces';
+import { IUserStore, IGetData, ICreateData, IUpdateData, IDeleteData } from '../interfaces';
 
 const API_URL = 'http://localhost:5000/api/v1';
 
@@ -12,8 +12,9 @@ const useUserStore = create<IUserStore>((set) => ({
     return data;
   },
   createUser: async (user) => {
-    const response = await axios.post<IUser>(`${API_URL}/users`, user);
-    set((state) => ({ users: [...state.users, response.data] }));
+    const { data } = await axios.post<ICreateData>(`${API_URL}/users`, user);
+    set((state) => ({ users: [...state.users, data.user] }));
+    return data;
   },
   updateUser: async (id, user) => {
     const { data } = await axios.patch<IUpdateData>(`${API_URL}/users/${id}`, user);

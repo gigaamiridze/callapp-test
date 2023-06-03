@@ -13,7 +13,15 @@ function CreateModal(props: ICreateModalProps) {
   const handleSave = (inputValues: InputValues) => {
     const { street, city, ...restValues } = inputValues;
     const address = { street, city };
-    const createdData = { ...restValues, address };
+    const userData = { ...restValues, address };
+
+    createUser(userData)
+      .then(response => {
+        showSuccessMessage('User created successfully');
+      })
+      .catch(error => {
+        showErrorMessage(error.response.data.message);
+      });
 
     setIsCreateModalOpen(false);
     form.resetFields();

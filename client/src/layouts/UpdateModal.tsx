@@ -14,7 +14,7 @@ function UpdateModal(props: IUpdateModalProps) {
     const address = { street, city };
     const updatedData = { ...restValues, address };
 
-    const userDataToSend  = {
+    const userData = {
       ...selectedRow,
       ...updatedData,
     }
@@ -23,9 +23,9 @@ function UpdateModal(props: IUpdateModalProps) {
     I'm deleting the generated unique key for the data because 
     I don't want it to be captured in the JSON file and after the table
     */
-    delete userDataToSend.key;
+    delete userData.key;
 
-    updateUser(selectedRow?.id, updatedData)
+    updateUser(selectedRow?.id, userData)
       .then(response => {
         showSuccessMessage(`User with ID ${response.user.id} updated successfully`);
       })
