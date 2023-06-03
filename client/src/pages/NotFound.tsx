@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { tabTitle } from '../utils';
+import { Title } from '../components';
 
 function NotFound() {
   useEffect(() => {
@@ -7,7 +8,7 @@ function NotFound() {
   }, []);
 
   return (
-    <div>Page Not Found</div>
+    <Title>Page Not Found</Title>
   )
 }
 
