@@ -47,6 +47,7 @@ const GlobalStyles = createGlobalStyle`
   // Elements styles
   body {
     width: 100%;
+    min-height: 100vh;
     font-family: ${({ theme }) => theme.fonts.roboto};
 
     &::-webkit-scrollbar {
@@ -66,6 +67,10 @@ const GlobalStyles = createGlobalStyle`
   }
   .ant-pagination {
     justify-content: center !important;
+  }
+  #root {
+    width: 100%;
+    min-height: 100vh; 
   }
 `;
 

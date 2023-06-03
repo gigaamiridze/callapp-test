@@ -6,7 +6,7 @@ export const router = createBrowserRouter(
     <Route path='/' Component={Root}>
       <Route index Component={Home} />
       <Route path='/chart' Component={PieChart} />
-      <Route path='/users' Component={UsersTable} />
+      <Route path='/table' Component={UsersTable} />
       <Route path='*' Component={NotFound} />      
     </Route>
   )

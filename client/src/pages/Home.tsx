@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { tabTitle } from '../utils';
+import { Title } from '../components';
 
 function Home() {
   useEffect(() => {
@@ -7,7 +8,7 @@ function Home() {
   }, []);
 
   return (
-    <div>Home</div>
+    <Title>Welcome to home page</Title>
   )
 }
 
