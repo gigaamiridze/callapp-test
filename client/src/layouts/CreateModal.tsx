@@ -21,6 +21,7 @@ function CreateModal(props: ICreateModalProps) {
 
   const handleCancel = () => {
     setIsCreateModalOpen(false);
+    form.resetFields();
   }
 
   return (
@@ -50,7 +51,11 @@ function CreateModal(props: ICreateModalProps) {
       >
         <Form.Item
           name='name'
-          rules={[{ required: true, message: 'Please enter your name' }]}
+          rules={[
+            { required: true, message: 'Please enter your name' },
+            { min: 4, message: 'Minimum 4 characters required' },
+            { max: 20, message: 'Maximum 20 characters allowed' },
+          ]}
         >
           <Input
             placeholder='Name'
@@ -61,14 +66,8 @@ function CreateModal(props: ICreateModalProps) {
         <Form.Item
           name='email'
           rules={[
-            {
-              required: true,
-              message: 'Please enter your email',
-            },
-            {
-              type: 'email',
-              message: 'Please enter a valid email',
-            },
+            { required: true, message: 'Please enter your email', },
+            { type: 'email', message: 'Please enter a valid email', },
           ]}
         >
           <Input
@@ -89,7 +88,11 @@ function CreateModal(props: ICreateModalProps) {
         </Form.Item>
         <Form.Item
           name='city'
-          rules={[{ required: true, message: 'Please enter your city' }]}
+          rules={[
+            { required: true, message: 'Please enter your city' },
+            { min: 4, message: 'Minimum 4 characters required' },
+            { max: 20, message: 'Maximum 20 characters allowed' },
+          ]}
         >
           <Input
             placeholder='City'
@@ -99,7 +102,11 @@ function CreateModal(props: ICreateModalProps) {
         </Form.Item>
         <Form.Item
           name='street'
-          rules={[{ required: true, message: 'Please enter your street' }]}
+          rules={[
+            { required: true, message: 'Please enter your street' },
+            { min: 4, message: 'Minimum 4 characters required' },
+            { max: 30, message: 'Maximum 30 characters allowed' },
+          ]}
         >
           <Input
             placeholder='Street'
