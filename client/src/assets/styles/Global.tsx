@@ -47,6 +47,7 @@ const GlobalStyles = createGlobalStyle`
   // Elements styles
   body {
     width: 100%;
+    font-family: ${({ theme }) => theme.fonts.roboto};
 
     &::-webkit-scrollbar {
       width: 14px;
