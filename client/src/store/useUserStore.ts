@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { IUserStore, IGetData, ICreateData, IUpdateData, IDeleteData } from '../interfaces';
 
-const API_URL = 'http://localhost:5000/api/v1';
+const API_URL = 'https://callapp-server.onrender.com/api/v1';
 
 const useUserStore = create<IUserStore>((set) => ({
   users: [],
